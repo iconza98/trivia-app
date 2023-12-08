@@ -17,7 +17,7 @@ type Dbinstance struct {
 var DB Dbinstance
 
 func ConnectDB() {
-	dsn := fmt.Sprintf("host=db user=%s password=%s dbname=%s port=5432 sslmode=disable Timeone=America/Denver",
+	dsn := fmt.Sprintf("host=db user=%s password=%s dbname=%s port=5432 sslmode=disable TimeZone=America/Denver",
 		os.Getenv("DB_USER"),
 		os.Getenv("DB_PASSWORD"),
 		os.Getenv("DB_NAME"))
@@ -33,6 +33,8 @@ func ConnectDB() {
 
 	log.Println("connected to database.")
 	db.Logger = logger.Default.LogMode(logger.Info)
+
+	log.Println("running migrations")
 	db.AutoMigrate(&models.Fact{})
 
 	DB = Dbinstance{
